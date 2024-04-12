@@ -1,3 +1,7 @@
+# Note
+
+The UI is made keeping only mobile view in mind.
+
 # Frontend App with Next.js
 
 This repository contains a frontend app built with Next.js, which integrates with a backend Node.js app to provide functionality for uploading, downloading, and listing files.
@@ -15,7 +19,7 @@ Follow these steps to use the frontend app:
 1. Clone this repository to your local machine:
 
     ```bash
-    git clone <repository_url>
+    git clone [<repository_url>](https://github.com/didyouwin07/basic-dropbox-frontend.git)
     ```
 
 2. Navigate to the project directory:
