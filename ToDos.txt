@@ -1,0 +1,6 @@
+1. Handle case where multiple files can have same name. (Backend too)
+2. User authentication via signup to be added in front-end for upload instead of hardcoding auth in upload API.
+3. Responsiveness to be handled for file list.
+4. Accessibility issues to be resolved.
+5. File upload to be handled in chunks as uploading large files would create issues.
+6. Upload functionality to be  tested.

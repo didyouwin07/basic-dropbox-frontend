@@ -1,95 +1,58 @@
-import Image from "next/image";
+"use client"
+
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { downloadFile, fetchFileList } from "@/apis";
 
 export default function Home() {
+  const [uploadedFile, setUploadedFile] = useState(null)
+  const [fileList, setFileList] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    /**
+     * Fetching the list of files
+     */
+    fetchFileListRes()
+
+  }, [])
+
+  const fetchFileListRes = async () => {
+    const res = await fetchFileList()
+    console.log(res)
+    setFileList(res)
+    setLoading(false)
+  }
+
+  const handleDownload = async (fileName) => {
+    await downloadFile(fileName)
+  }
+
+  const handleBasicFileUpload = async(e) => {
+    console.log("Calling this")
+    const {files} = e.target
+    if(files.length){
+      const res = await uploadedFile(files[0])
+    }
+  }
+
+  if (loading) {
+    return <div className={styles.wrapper}>Loading...</div>
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className={styles.wrapper}>
+      <div className={styles.fileListWrapper}>
+        {fileList.map((fileName) => {
+          return <div className={styles.fileNameWrapper} onClick={() => handleDownload(fileName)}>
+            {fileName}
+          </div>
+        })}
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <label htmlFor="fileUpload" className={styles.uploadFileButton}>
+        <input type="file" name="fileUpload" id="fileUplaod" onChange={handleBasicFileUpload} hidden />
+          Upload
+      </label>
+    </div>
   );
 }
